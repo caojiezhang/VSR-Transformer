@@ -14,7 +14,9 @@ If you use this code for a paper please cite:
 
 This repository is implemented based on [BasicSR](https://github.com/xinntao/BasicSR). If you use the repository, please consider citing BasicSR.
 
-<p align="center"><img width="95%" src="figs/attention.pdf" /></p>
+<p align="center"><img width="95%" src="figs/framework.png" /></p>
+<p align="center"><img width="95%" src="figs/attention.png" /></p>
+<p align="center"><img width="95%" src="figs/feedforward.png" /></p>
 
 ## Dependencies and Installation
 
