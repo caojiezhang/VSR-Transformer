@@ -14,6 +14,8 @@ If you use this code for a paper please cite:
 
 This repository is implemented based on [BasicSR](https://github.com/xinntao/BasicSR). If you use the repository, please consider citing BasicSR.
 
+<p align="center"><img width="95%" src="figs/attention.pdf" /></p>
+
 ## Dependencies and Installation
 
 - Python >= 3.7 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html))
@@ -54,12 +56,7 @@ This repository is implemented based on [BasicSR](https://github.com/xinntao/Bas
 - The descriptions of currently supported datasets (`torch.utils.data.Dataset` classes) are in [Datasets.md](docs/Datasets.md).
 
 
-## Train and Test
-
-- **Training and testing commands**: Please see **[TrainTest.md](docs/TrainTest.md)** for the basic usage.
-- **Options/Configs**: Please refer to [Config.md](docs/Config.md).
-- **Logging**: Please refer to [Logging.md](docs/Logging.md).
-
+## Training
 
     ```bash
     # Train on REDS
@@ -68,6 +65,8 @@ This repository is implemented based on [BasicSR](https://github.com/xinntao/Bas
     # Train on Vimeo-90K
     CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/train.py -opt options/train/train_vsrTransformer_x4_Vimeo.yml --launcher pytorch
     ```
+
+## Testing
 
     ```bash
     # Test on REDS
@@ -81,11 +80,7 @@ This repository is implemented based on [BasicSR](https://github.com/xinntao/Bas
     ```
 
 
-
 ## :scroll: License and Acknowledgement
 
 This project is released under the Apache 2.0 license.<br>
 More details about **license** and **acknowledgement** are in [LICENSE](LICENSE/README.md).
-
-
-

@@ -2,21 +2,6 @@
 
 [English](DatasetPreparation.md) 
 
-#### Contents
-
-1. [Data Storage Format](#Data-Storage-Format)
-    1. [How to Use](#How-to-Use)
-    1. [How to Implement](#How-to-Implement)
-    1. [LMDB Description](#LMDB-Description)
-    1. [Data Pre-fetcher](#Data-Pre-fetcher)
-1. [Image Super-Resolution](#Image-Super-Resolution)
-    1. [DIV2K](#DIV2K)
-    1. [Common Image SR Datasets](#Common-Image-SR-Datasets)
-1. [Video Super-Resolution](#Video-Super-Resolution)
-    1. [REDS](#REDS)
-    1. [Vimeo90K](#Vimeo90K)
-1. [StylgeGAN2](#StyleGAN2)
-    1. [FFHQ](#FFHQ)
 
 ## Data Storage Format
 
@@ -24,7 +9,6 @@ At present, there are three types of data storage formats supported:
 
 1. Store in `hard disk` directly in the format of images / video frames.
 1. Make [LMDB](https://lmdb.readthedocs.io/en/release/), which could accelerate the IO and decompression speed during training.
-1. [memcached](https://memcached.org/) is also supported, if they are installed (usually on clusters).
 
 #### How to Use
 
@@ -33,9 +17,9 @@ At present, we can modify the configuration yaml file to support different data 
 1. Directly read disk data.
 
     ```yaml
-    type: PairedImageDataset
-    dataroot_gt: datasets/DIV2K/DIV2K_train_HR_sub
-    dataroot_lq: datasets/DIV2K/DIV2K_train_LR_bicubic/X4_sub
+    type: VideoTestDataset
+    dataroot_gt: ./train_sharp
+    dataroot_lq: ./train_sharp_bicubic/X4/
     io_backend:
       type: disk
     ```
@@ -44,26 +28,14 @@ At present, we can modify the configuration yaml file to support different data 
 We need to make LMDB before using it. Please refer to [LMDB description](#LMDB-Description). Note that we add meta information to the original LMDB, and the specific binary contents are also different. Therefore, LMDB from other sources can not be used directly.
 
     ```yaml
-    type: PairedImageDataset
-    dataroot_gt: datasets/DIV2K/DIV2K_train_HR_sub.lmdb
-    dataroot_lq: datasets/DIV2K/DIV2K_train_LR_bicubic_X4_sub.lmdb
+    type: REDSDataset
+    dataroot_gt: /cluster/work/cvl/videosr/REDS/train_sharp_with_val.lmdb 
+    dataroot_lq: /cluster/work/cvl/videosr/REDS/train_sharp_bicubic_with_val.lmdb 
     io_backend:
       type: lmdb
     ```
 
-1. Use Memcached
-Your machine/clusters mush support memcached before using it. The configuration file should be modified accordingly.
 
-    ```yaml
-    type: PairedImageDataset
-    dataroot_gt: datasets/DIV2K_train_HR_sub
-    dataroot_lq: datasets/DIV2K_train_LR_bicubicX4_sub
-    io_backend:
-      type: memcached
-      server_list_cfg: /mnt/lustre/share/memcached_client/server_list.conf
-      client_cfg: /mnt/lustre/share/memcached_client/client.conf
-      sys_path: /mnt/lustre/share/pymc/py3
-    ```
 
 #### How to Implement
 
@@ -142,117 +114,7 @@ It can be achieved by setting `prefetch_mode` in the configuration file. Current
     num_prefetch_queue: 1  # 1 by default
     ```
 
-## Image Super-Resolution
 
-It is recommended to symlink the dataset root to `datasets` with the command `ln -s xxx yyy`. If your folder structure is different, you may need to change the corresponding paths in config files.
-
-### DIV2K
-
-[DIV2K](https://data.vision.ee.ethz.ch/cvl/DIV2K/) is a widely-used dataset in image super-resolution. In many research works, a MATLAB bicubic downsampling kernel is assumed. It may not be practical because the MATLAB bicubic downsampling kernel is not a good approximation for the implicit degradation kernels in real-world scenarios. And there is another topic named *blind restoration* that deals with this gap.
-
-**Preparation Steps**
-
-1. Download the datasets from the [official DIV2K website](https://data.vision.ee.ethz.ch/cvl/DIV2K/).<br>
-1. Crop to sub-images: DIV2K has 2K resolution (e.g., 2048 × 1080) images but the training patches are usually small (e.g., 128x128 or 192x192). So there is a waste if reading the whole image but only using a very small part of it. In order to accelerate the IO speed during training, we crop the 2K resolution images to sub-images (here, we crop to 480x480 sub-images). <br>
-Note that the size of sub-images is different from the training patch size (`gt_size`) defined in the config file. Specifically, the cropped sub-images with 480x480 are stored. The dataloader will further randomly crop the sub-images to `GT_size x GT_size` patches for training. <br/>
-    Run the script [extract_subimages.py](../scripts/data_preparation/extract_subimages.py):
-
-    ```python
-    python scripts/data_preparation/extract_subimages.py
-    ```
-
-    Remember to modify the paths and configurations if you have different settings.
-1. [Optional] Create LMDB files. Please refer to [LMDB Description](#LMDB-Description). `python scripts/data_preparation/create_lmdb.py`. Use the `create_lmdb_for_div2k` function and remember to modify the paths and configurations accordingly.
-1. Test the dataloader with the script `tests/test_paired_image_dataset.py`.
-Remember to modify the paths and configurations accordingly.
-1. [Optional] If you want to use meta_info_file, you may need to run `python scripts/data_preparation/generate_meta_info.py` to generate the meta_info_file.
-
-### Common Image SR Datasets
-
-We provide a list of common image super-resolution datasets.
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Datasets</th>
-    <th>Short Description</th>
-    <th>Download</th>
-  </tr>
-  <tr>
-    <td rowspan="3">Classical SR Training</td>
-    <td>T91</td>
-    <td><sub>91 images for training</sub></td>
-    <td rowspan="9"><a href="https://drive.google.com/drive/folders/1gt5eT293esqY0yr1Anbm36EdnxWW_5oH?usp=sharing">Google Drive</a> / <a href="https://pan.baidu.com/s/1q_1ERCMqALH0xFwjLM0pTg">Baidu Drive</a></td>
-  </tr>
- <tr>
-    <td><a href="https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/">BSDS200</a></td>
-    <td><sub>A subset (train) of BSD500 for training</sub></td>
-  </tr>
-  <tr>
-    <td><a href="http://mmlab.ie.cuhk.edu.hk/projects/FSRCNN.html">General100</a></td>
-    <td><sub>100 images for training</sub></td>
-  </tr>
-  <tr>
-    <td rowspan="6">Classical SR Testing</td>
-    <td>Set5</td>
-    <td><sub>Set5 test dataset</sub></td>
-  </tr>
-  <tr>
-    <td>Set14</td>
-    <td><sub>Set14 test dataset</sub></td>
-  </tr>
-  <tr>
-    <td><a href="https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/">BSDS100</a></td>
-    <td><sub>A subset (test) of BSD500 for testing</sub></td>
-  </tr>
-  <tr>
-    <td><a href="https://sites.google.com/site/jbhuang0604/publications/struct_sr">urban100</a></td>
-    <td><sub>100 building images for testing (regular structures)</sub></td>
-  </tr>
-  <tr>
-    <td><a href="http://www.manga109.org/en/">manga109</a></td>
-    <td><sub>109 images of Japanese manga for testing</sub></td>
-  </tr>
-  <tr>
-    <td>historical</td>
-    <td><sub>10 gray low-resolution images without the ground-truth</sub></td>
-  </tr>
-
-  <tr>
-    <td rowspan="3">2K Resolution</td>
-    <td><a href="https://data.vision.ee.ethz.ch/cvl/DIV2K/">DIV2K</a></td>
-    <td><sub>proposed in <a href="http://www.vision.ee.ethz.ch/ntire17/">NTIRE17</a> (800 train and 100 validation)</sub></td>
-    <td><a href="https://data.vision.ee.ethz.ch/cvl/DIV2K/">official website</a></td>
-  </tr>
- <tr>
-    <td><a href="https://github.com/LimBee/NTIRE2017">Flickr2K</a></td>
-    <td><sub>2650 2K images from Flickr for training</sub></td>
-    <td><a href="https://cv.snu.ac.kr/research/EDSR/Flickr2K.tar">official website</a></td>
-  </tr>
- <tr>
-    <td>DF2K</td>
-    <td><sub>A merged training dataset of DIV2K and Flickr2K</sub></td>
-    <td>-</a></td>
-  </tr>
-
-  <tr>
-    <td rowspan="2">OST (Outdoor Scenes)</td>
-    <td>OST Training</td>
-    <td><sub>7 categories images with rich textures</sub></td>
-    <td rowspan="2"><a href="https://drive.google.com/drive/u/1/folders/1iZfzAxAwOpeutz27HC56_y5RNqnsPPKr">Google Drive</a> / <a href="https://pan.baidu.com/s/1neUq5tZ4yTnOEAntZpK_rQ#list/path=%2Fpublic%2FSFTGAN&parentPath=%2Fpublic">Baidu Drive</a></td>
-  </tr>
- <tr>
-    <td>OST300</td>
-    <td><sub>300 test images of outdoor scenes</sub></td>
-  </tr>
-
-  <tr>
-    <td >PIRM</td>
-    <td>PIRM</td>
-    <td><sub>PIRM self-val, val, test datasets</sub></td>
-    <td rowspan="2"><a href="https://drive.google.com/drive/folders/17FmdXu5t8wlKwt8extb_nQAdjxUOrb1O?usp=sharing">Google Drive</a> / <a href="https://pan.baidu.com/s/1gYv4tSJk_RVCbCq4B6UxNQ">Baidu Drive</a></td>
-  </tr>
-</table>
 
 ## Video Super-Resolution
 
@@ -293,15 +155,3 @@ The low-resolution images in the Vimeo90K test dataset are generated with the MA
 1. Test the dataloader with the script `tests/test_vimeo90k_dataset.py`.
 Remember to modify the paths and configurations accordingly.
 
-## StyleGAN2
-
-### FFHQ
-
-Training dataset: [FFHQ](https://github.com/NVlabs/ffhq-dataset).
-
-1. Download FFHQ dataset. Recommend to download the tfrecords files from [NVlabs/ffhq-dataset](https://github.com/NVlabs/ffhq-dataset).
-1. Extract tfrecords to images or LMDBs. (TensorFlow is required to read tfrecords). For each resolution, we will create images folder or LMDB files separately.
-
-    ```bash
-    python scripts/data_preparation/extract_images_from_tfrecords.py
-    ```
