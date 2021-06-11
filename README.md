@@ -1,12 +1,12 @@
 # VSR-Transformer
 
-By [Jiezhang Cao](https://github.com/caojiezhang/), [Yawei Li](https://github.com/ofsoundof), [Kai Zhang](http://github.com/cszn), [Luc Van Gool](https://scholar.google.com/citations?user=TwMib_QAAAAJ&hl=en).
+By [Jiezhang Cao](https://github.com/caojiezhang/), [Yawei Li](https://github.com/ofsoundof), [Kai Zhang](http://github.com/cszn), [Luc Van Gool](https://scholar.google.com/citations?user=TwMib_QAAAAJ&hl=en)
 
 This paper proposes a new Transformer for video super-resolution (called VSR-Transformer). Our VSR-Transformer block contains a spatial-temporal convolutional self-attention layer and a bidirectionaloptical flow-based feed-forward layer. Our VSR-Transformer is able to improve the performance of VSR. This repository is the official implementation of ["Video Super-Resolution Transformer"](https://arxiv.org/pdf/).  
 
-<p align="center"><img width="95%" src="figs/framework.png" /></p>
-<p align="center"><img width="95%" src="figs/attention.png" /></p>
-<p align="center"><img width="95%" src="figs/feedforward.png" /></p>
+<p align="center"><img width="100%" src="figs/framework.png" /></p>
+<p align="center"><img width="100%" src="figs/attention.png" /></p>
+<p align="center"><img width="100%" src="figs/feedforward.png" /></p>
 
 ## Dependencies and Installation
 
@@ -41,7 +41,6 @@ This paper proposes a new Transformer for video super-resolution (called VSR-Tra
     CUDNN_LIB_DIR=/usr/local/cuda \
     python setup.py develop
     ```
-
 
 
 ## Dataset Preparation
