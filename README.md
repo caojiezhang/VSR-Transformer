@@ -1,9 +1,8 @@
 # VSR-Transformer
 
+By [Jiezhang Cao](https://github.com/caojiezhang/), [Yawei Li](https://github.com/ofsoundof), [Kai Zhang](http://github.com/cszn), [Luc Van Gool](https://scholar.google.com/citations?user=TwMib_QAAAAJ&hl=en).
 
-
-
-
+This repository is the official implementation of ["Video Super-Resolution Transformer"](https://arxiv.org/pdf/2103.14030.pdf). It currently includes code.
 
 <p align="center"><img width="95%" src="figs/framework.png" /></p>
 <p align="center"><img width="95%" src="figs/attention.png" /></p>
@@ -53,7 +52,7 @@
 
 ## Training
 
-- Please refer to **[configuration](options/train/)** of training for more details.
+- Please refer to **[configuration of training](options/train/)** for more details.
 
     ```bash
     # Train on REDS
@@ -64,7 +63,7 @@
 
 ## Testing
 
-- Please refer to **[configuration](options/test/)** of testing for more details.
+- Please refer to **[configuration of testing](options/test/)** for more details.
 
     ```bash
     # Test on REDS
@@ -86,7 +85,7 @@ More details about **license** and **acknowledgement** are in [LICENSE](LICENSE/
 
 ## Citation
 
-If you use this code for a paper please cite:
+If you use this code of our paper please cite:
 
 ```
 @article{cao2021vsrt,
