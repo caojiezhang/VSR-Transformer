@@ -77,12 +77,6 @@ This paper proposes a new Transformer for video super-resolution (called VSR-Tra
     ```
 
 
-## :scroll: License and Acknowledgement
-
-This project is released under the Apache 2.0 license.<br>
-More details about **license** and **acknowledgement** are in [LICENSE](LICENSE/README.md).
-
-
 ## Citation
 
 If you use this code of our paper please cite:
