@@ -53,7 +53,7 @@
 
 ## Training
 
-1. Train
+- Please refer to **[option](options/train/)** for more details.
 
     ```bash
     # Train on REDS
