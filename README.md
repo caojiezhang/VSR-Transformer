@@ -53,7 +53,7 @@
 
 ## Training
 
-- Please refer to **[option](options/train/)** for more details.
+- Please refer to **[configuration](options/train/)** of training for more details.
 
     ```bash
     # Train on REDS
@@ -63,6 +63,8 @@
     ```
 
 ## Testing
+
+- Please refer to **[configuration](options/test/)** of testing for more details.
 
     ```bash
     # Test on REDS
