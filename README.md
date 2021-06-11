@@ -1,18 +1,9 @@
 # VSR-Transformer
 
 
-If you use this code for a paper please cite:
 
-```
-@article{cao2021vsrt,
-  title={Video Super-Resolution Transformer},
-  author={Cao, Jiezhang and Li, Yawei and Zhang, Kai and Van Gool, Luc},
-  journal={arXiv},
-  year={2021}
-}
-```
 
-This repository is implemented based on [BasicSR](https://github.com/xinntao/BasicSR). If you use the repository, please consider citing BasicSR.
+
 
 <p align="center"><img width="95%" src="figs/framework.png" /></p>
 <p align="center"><img width="95%" src="figs/attention.png" /></p>
@@ -86,3 +77,21 @@ This repository is implemented based on [BasicSR](https://github.com/xinntao/Bas
 
 This project is released under the Apache 2.0 license.<br>
 More details about **license** and **acknowledgement** are in [LICENSE](LICENSE/README.md).
+
+
+## Citation
+
+If you use this code for a paper please cite:
+
+```
+@article{cao2021vsrt,
+  title={Video Super-Resolution Transformer},
+  author={Cao, Jiezhang and Li, Yawei and Zhang, Kai and Van Gool, Luc},
+  journal={arXiv},
+  year={2021}
+}
+```
+
+## Acknowledgments
+
+This repository is implemented based on [BasicSR](https://github.com/xinntao/BasicSR). If you use the repository, please consider citing BasicSR.
