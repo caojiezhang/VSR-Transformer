@@ -13,3 +13,6 @@ tqdm
 yapf
 einops
 positional-encodings
+fvcore
+mmcv
+mmedit

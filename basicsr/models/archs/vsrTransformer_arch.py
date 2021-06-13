@@ -142,12 +142,12 @@ class globalAttention(nn.Module):
 
 
 class Transformer(nn.Module):
-    def __init__(self, num_feat, feat_size, depth, patch_size, heads, kernel_size):
+    def __init__(self, num_feat, feat_size, depth, patch_size, heads):
         super().__init__()
         self.layers = nn.ModuleList([])
         for _ in range(depth):
             self.layers.append(nn.ModuleList([
-                Residual(PreNorm(num_feat, feat_size, globalAttention(num_feat, patch_size, heads, kernel_size))), 
+                Residual(PreNorm(num_feat, feat_size, globalAttention(num_feat, patch_size, heads))), 
                 Residual(PreNorm(num_feat, feat_size, FeedForward(num_feat)))
             ]))
             
