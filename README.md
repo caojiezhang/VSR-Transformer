@@ -33,15 +33,6 @@ This paper proposes a new Transformer for video super-resolution (called VSR-Tra
     python setup.py develop
     ```
 
-    You may also want to specify the CUDA paths:
-
-    ```bash
-    CUDA_HOME=/usr/local/cuda \
-    CUDNN_INCLUDE_DIR=/usr/local/cuda \
-    CUDNN_LIB_DIR=/usr/local/cuda \
-    python setup.py develop
-    ```
-
 
 ## Dataset Preparation
 
