@@ -42,7 +42,7 @@ This paper proposes a new Transformer for video super-resolution (called VSR-Tra
 
 ## Training
 
-- Please refer to **[configuration of training](options/train/)** for more details.
+- Please refer to **[configuration of training](options/train/)** for more details and [pretrained models](https://drive.google.com/drive/folders/1HFZbuYq54U9mz_ngAqfW3pRMcry7XWx3?usp=sharing).  
 
     ```bash
     # Train on REDS
